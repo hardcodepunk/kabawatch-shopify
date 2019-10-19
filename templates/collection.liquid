@@ -1,18 +1,19 @@
-{% paginate collection.products by 2 %}
-  <h1>{{ collection.title }}</h1>
-  {% for product in collection.products %}
-    <div>
-      <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
-      {{ product.price | money }}
-      {% unless product.available %}<br><strong>sold out</strong>{% endunless %}
+<section class="shop">
+  <ul class="shop__list">
+    {% for product in collection.products %}
+    <li class="shop__list__item">
       <a href="{{ product.url | within: collection }}">
-        <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+        <div class="shop__list__item__visual">
+          <img class="shop__list__item__visual__img" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}"/>
+        </div>
+        <div class="shop__list__item__text">
+          <h2>{{ product.title }}</h2>
+          <h3>{{ product.vendor }}</h3>
+          <h4>{{ product.price | money }}</h4>
+          <!--{% unless product.available %}<br><strong>sold out</strong>{% endunless %}-->
+        </div>
       </a>
-    </div>
-  {% else %}
-    <p>no matches</p>
-  {% endfor %}
-  {% if paginate.pages > 1 %}
-    {{ paginate | default_pagination }}
-  {% endif %}
-{% endpaginate %}
+    </li>
+    {% endfor %}
+  </ul>
+</section>

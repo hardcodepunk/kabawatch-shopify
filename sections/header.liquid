@@ -1,7 +1,7 @@
 <!-- header -->
 <header class="header">
   <div class="site-navigation wrapper sub-header">
-    <a href="index.html" class="site-navigation__logo">Kabawatch</a>
+    <a href="{{ shop.url }}" class="site-navigation__logo">Kabawatch</a>
     <div class="site-navigation__tools">
       <div class="site-navigation__tools__cart js-toggle-cart-overlay"><span id="cart-counter" class="site-navigation__tools__cart__counter">0</span><br>items in cart</div>
       <div class="menu-button js-toggle-menu"><span class="menu-button__icon"></span></div>
@@ -11,7 +11,7 @@
     <ul class="shop-filter__categories list--horizontal">
       {% for link in linklists.categories.links %}
         {% assign child_list_handle = link.title | handleize %}
-        <li class="shop-filter__categories__item">
+        <li class="shop-filter__categories__item {% if template contains 'collection' and link.title == collection.title %} is-selected {% endif %}">
           <a href="{{ link.url }}">{{ link.title }}</a>
           <span class="shop-filter__categories__item__arrow"></span>
         </li>

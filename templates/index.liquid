@@ -1,12 +1,19 @@
-{{ content_for_index }}
-
-{% for product in collections.frontpage.products limit:4 %}
-  <div>
-    <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
-    {{ product.price | money }}
-    {% unless product.available %}<br><strong>sold out</strong>{% endunless %}
-    <a href="{{ product.url | within: collection }}">
-      <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
-    </a>
-  </div>
-{% endfor %}
+<section class="shop">
+  <ul class="shop__list">
+    {% for product in collections['all'].products%}
+    <li class="shop__list__item">
+      <a href="{{ product.url | within: collection }}">
+        <div class="shop__list__item__visual">
+          <img class="shop__list__item__visual__img" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}"/>
+        </div>
+        <div class="shop__list__item__text">
+          <h2>{{ product.title }}</h2>
+          <h3>{{ product.vendor }}</h3>
+          <h4>{{ product.price | money }}</h4>
+          <!--{% unless product.available %}<br><strong>sold out</strong>{% endunless %}-->
+        </div>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
