@@ -1,5 +1,36 @@
 {% if cart.item_count > 0 %}
-  <h1>cart</h1>
+  <section class="cart">
+    <h1>Your cart</h1>
+
+    <form action="/cart" method="post" novalidate>
+
+      <ul class="cart__list">
+        {% for item in cart.items %}
+        <li class="cart__list__item">
+          <div class="cart__list__item__visual">
+            <img class="cart__list__item__visual__img" src="{{ item | img_url: 'large' }}" alt="{{ item.title | escape }}"/>
+          </div>
+          <div class="cart__list__item__text">
+            <h2>{{ item.product.title }}</h2>
+            <h3>{{ item.product.vendor }}</h3>
+            <h4>{{ item.price | money }}</h4>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+
+      <div class="bottom-bar">
+        <div class="cart__sub-total">
+          <h2 class="cart__sub-total__title">Subtotal</h2><h2 class="cart__sub-total__number">{{ cart.total_price | money }}</h2>
+        </div>
+        <div class="cart__checkout">
+          <button class="cta cart__checkout__btn" type="submit" name="checkout">Check out</button>
+        </div>
+      </div>
+
+  </section>
+
+  <!--<h1>cart</h1>
   <form action="/cart" method="post" novalidate>
     <table>
       <thead>
@@ -39,8 +70,8 @@
       <button type="submit" name="update">Update</button>
       <button type="submit" name="checkout">Checkout</button>
     </div>
-  </form>
+  </form>-->
 {% else %}
-  <h2>cart</h2>
+  <h1>Your cart</h1>
   Cart is empty
 {% endif %}

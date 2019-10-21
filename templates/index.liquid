@@ -1,6 +1,6 @@
 <section class="shop">
   <ul class="shop__list">
-    {% for product in collections['all'].products%}
+    {% for product in collections['all'].products %}
     <li class="shop__list__item">
       <a href="{{ product.url | within: collection }}">
         <div class="shop__list__item__visual">
@@ -17,3 +17,7 @@
     {% endfor %}
   </ul>
 </section>
+<!-- footer -->
+<footer class="footer wrapper">
+  <a href="#" class="footer__logo">Kabawatch</a>
+</footer>

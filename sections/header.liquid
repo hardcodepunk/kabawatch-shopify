@@ -3,7 +3,7 @@
   <div class="site-navigation wrapper sub-header">
     <a href="{{ shop.url }}" class="site-navigation__logo">Kabawatch</a>
     <div class="site-navigation__tools">
-      <div class="site-navigation__tools__cart js-toggle-cart-overlay"><span id="cart-counter" class="site-navigation__tools__cart__counter">0</span><br>items in cart</div>
+      <a class="site-navigation__tools__cart" href="{{ routes.cart_url }}"><span id="cart-counter" class="site-navigation__tools__cart__counter">{{ cart.item_count }}</span><br>items in cart</a>
       <div class="menu-button js-toggle-menu"><span class="menu-button__icon"></span></div>
     </div>
   </div>
@@ -25,25 +25,25 @@
 <div class="menu-overlay">
   <div class="site-navigation wrapper sub-header">
     <div class="site-navigation__tools">
-      <div class="site-navigation__tools__cart js-toggle-cart-overlay"><span class="site-navigation__tools__cart__counter">0</span><br>items in cart</div>
+      <div class="site-navigation__tools__cart js-toggle-cart-overlay"><span class="site-navigation__tools__cart__counter">{{ cart.item_count }}</span><br>items in cart</div>
       <div class="close-button js-toggle-menu"><span class="close-button__icon"></span></div>
     </div>
   </div>
   <nav class="main-navigation wrapper">
     <ul class="main-navigation__list">
-      <li class="main-navigation__list__item"><a href="index.html">Shop</a></li>
+      <li class="main-navigation__list__item"><a href="{{ shop.url }}">Shop</a></li>
       <li class="main-navigation__list__item"><a href="about.html">About</a></li>
       <li class="main-navigation__list__item"><a href="contact.html">Contact</a></li>
     </ul>
   </nav>
 </div>
 
-<!-- cart overlay -->
+<!-- cart overlay
 <div class="cart-overlay">
   <div class="cart-overlay__top-bar wrapper">
-    <a href="index.html" class="site-navigation__logo">Kabawatch</a>
+    <a href="{{ shop.url }}" class="site-navigation__logo">Kabawatch</a>
     <div class="site-navigation__tools">
-      <div class="site-navigation__tools__cart js-toggle-cart-overlay"><span id="cart-counter" class="site-navigation__tools__cart__counter">0</span><br>items in cart</div>
+      <div class="site-navigation__tools__cart js-toggle-cart-overlay"><span id="cart-counter" class="site-navigation__tools__cart__counter">{{ cart.item_count }}</span><br>items in cart</div>
       <div class="close-button js-toggle-cart-overlay"><span class="close-button__icon"></span></div>
     </div>
   </div>
@@ -80,7 +80,7 @@
       </div>
     </div>
   </section>
-</div>
+</div>-->
 
 <!-- filter overlay -->
 <div class="advanced-filter-overlay">
@@ -88,84 +88,43 @@
     <div class="close-button js-toggle-advanced-filter"><span class="close-button__icon"></span></div>
   </div>
   <div class="advanced-filter-overlay__filters">
-    <form class="form">
-      <div class="parameters-group wrapper">
-        <div class="input-group">
-          <select name="brands">
-            <option disabled selected value>Brand</option>
-            <option value="brand1">Sjiek Merk</option>
-            <option value="brand2">Heel Sjiek Merk</option>
-            <option value="brand3">Wajow zo sjiek</option>
-            <option value="brand4">Super Sjiek</option>
-          </select>
-        </div>
-        <div class="input-group">
-          <select name="lines">
-            <option disabled selected value>Line</option>
-            <option value="line1">Lange lijn</option>
-            <option value="line2">Korte lijn</option>
-            <option value="line3">Dikke lijn</option>
-            <option value="line4">Scheve lijn</option>
-          </select>
-        </div>
-        <div class="input-group">
-          <select name="year">
-            <option disabled selected value>Year</option>
-            <option value="1980">1980</option>
-            <option value="1981">1981</option>
-            <option value="1982">1982</option>
-            <option value="1983">1983</option>
-          </select>
-        </div>
-        <div class="input-group">
-          <select name="year">
-            <option disabled selected value>Year</option>
-            <option value="1980">1980</option>
-            <option value="1981">1981</option>
-            <option value="1982">1982</option>
-            <option value="1983">1983</option>
-          </select>
-        </div>
-        <div class="input-group">
-          <select name="year">
-            <option disabled selected value>Year</option>
-            <option value="1980">1980</option>
-            <option value="1981">1981</option>
-            <option value="1982">1982</option>
-            <option value="1983">1983</option>
-          </select>
-        </div>
-        <div class="input-group">
-          <select name="year">
-            <option disabled selected value>Year</option>
-            <option value="1980">1980</option>
-            <option value="1981">1981</option>
-            <option value="1982">1982</option>
-            <option value="1983">1983</option>
-          </select>
-        </div>
-        <div class="input-group">
-          <select name="year">
-            <option disabled selected value>Year</option>
-            <option value="1980">1980</option>
-            <option value="1981">1981</option>
-            <option value="1982">1982</option>
-            <option value="1983">1983</option>
-          </select>
-        </div>
-        <div class="input-group">
-          <select name="year">
-            <option disabled selected value>Year</option>
-            <option value="1980">1980</option>
-            <option value="1981">1981</option>
-            <option value="1982">1982</option>
-            <option value="1983">1983</option>
-          </select>
-        </div>
-      </div>
-      <div class="input-submit wrapper">
-        <input class="cta" type="submit" value="Apply parameters">
-      </div>
-    </form>
+
+    <div id="sort-by-container"></div>
+
+    {% if template contains 'collection' and collection.all_tags.size > 1 %}
+
+      <!-- A recursive loop to catch and filter out the different tag categories -->
+      {% assign c = 0 %}
+      {% for t in collection.all_tags %}
+      {% capture cat %}{{ cat }}{% capture temp_cat %}{% if t contains '_' %}{% assign cat_grp = t | split: '_' %}{{ cat_grp.first }}{% endif %}{% endcapture %}{% unless cat contains temp_cat %}{% if t contains '_' %}{% assign new_cat_grp = t | split: '_' %}{{ new_cat_grp.first }}{% endif %}{% unless forloop.last %}+{% endunless %}{% assign c = c | plus: 1 %}{% endunless %}{% endcapture %}
+      {% endfor %}
+
+      <!-- create array of tag categories -->
+      {% assign cat_array = cat | split: '+' %}
+
+      <!-- loop through tag categories -->
+      {% for i in cat_array %}
+      <!-- ignore if tag category is empty -->
+      {% unless i == '' %}
+      <h5>Filter by {{ i }}</h5>
+      <ul class="nav">
+        <!-- loop through collection tags -->
+    	  {% for t in collection.all_tags %}
+    	  <!-- if tag contains the category title -->
+    	  {% if t contains i %}
+    	  <!-- strip out tag category prefix and add/remove link for tag filtering -->
+    	  {% if current_tags contains t %}
+    	  <li>{{ t | remove: i | remove: '_' | append: '&nbsp;x' | link_to_remove_tag: t }}</li>
+    	  {% else %}
+    	  <li>{{ t | remove: i | remove: '_' | link_to_add_tag: t }}</li>
+    	  {% endif %}
+    	  {% endif %}
+    	  {% endfor %}
+      </ul>
+      {% endunless %}
+      {% endfor %}
+
+    {% endif %}
+
   </div>
 </div>

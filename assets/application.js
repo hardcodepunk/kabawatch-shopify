@@ -21,14 +21,60 @@ for (var i = 0; i < advancedFilterButtons.length; i++) {
     }
   });
 }
+/* advanced filter */
 
-var cartButtons = document.querySelectorAll('.js-toggle-cart-overlay');
-for (var i = 0; i < cartButtons.length; i++) {
-  cartButtons[i].addEventListener('click', function() {
-    if (menuToggle.classList.contains('open-cart')) {
-      menuToggle.classList.remove('open-cart');
-    } else {
-      menuToggle.classList.add('open-cart');
-    }
+var currentURL = new URL(window.location);
+var currentParams = currentURL.searchParams.get('sort_by');
+var urlSearchParams = new URLSearchParams(
+  window.location.search.indexOf("sort_by") > -1
+  ? window.location.search.replace(/sort_by/gi,"")
+  : window.location.search
+);
+
+var render = function (template, node) {
+  node.innerHTML = template;
+
+  node.querySelector('#sort-by').addEventListener('change', function() {
+    urlSearchParams.set(this.name, this.value);
+    window.location = `?sort_by${urlSearchParams}`;
   });
-}
+};
+
+var SortOptions = [{
+  label: 'Featured',
+  value: 'manual'
+}, {
+  label: 'Price: Low to High',
+  value: 'price-ascending'
+}, {
+  label: 'Price: High to Low',
+  value: 'price-descending'
+}, {
+  label: 'A-Z',
+  value: 'title-ascending'
+}, {
+  label: 'Z-A',
+  value: 'title-descending'
+}, {
+  label: 'Oldest to Newest',
+  value: 'created-ascending'
+}, {
+  label: 'Newest to Oldest',
+  value: 'created-descending'
+}, {
+  label: 'Best Selling',
+  value: 'best-selling'
+}];
+
+var template = `
+  <div>
+    <label for="sort-by">Sort by</label>
+    <select id="sort-by">
+      ${SortOptions.map((item) =>
+        `<option value="${item.value}" ${currentParams === item.value ? 'selected' : ''}>${item.label}</option>`
+      ).join('')}
+    </select>
+  </div>
+`;
+
+render(template, document.querySelector('#sort-by-container'));
