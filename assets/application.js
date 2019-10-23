@@ -57,6 +57,13 @@ function toggleFilter(e) {
     window.history.pushState({path: url}, '', url);
   }
 
+  // add checked class to filter button
+  if (this.classList.contains('is-checked')) {
+    this.classList.remove('is-checked');
+  } else {
+    this.classList.add('is-checked');
+  }
+
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url);
   xhr.onreadystatechange = function() {
