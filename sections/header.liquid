@@ -89,10 +89,11 @@
   </div>
   <div class="advanced-filter-overlay__filters">
 
-    <div id="sort-by-container"></div>
-
-    {% if template contains 'collection' and collection.all_tags.size > 1 %}
-
+    <!-- <div id="sort-by-container" class="advanced-filter-overlay__filters__filter-group"></div> -->
+    {% if template == 'index' %}
+      {% assign collection = collections.all %}
+    {% endif %}
+    {% if template == 'index' or template contains 'collection' %}
       <!-- A recursive loop to catch and filter out the different tag categories -->
       {% assign c = 0 %}
       {% for t in collection.all_tags %}
@@ -104,24 +105,24 @@
 
       <!-- loop through tag categories -->
       {% for i in cat_array %}
-      <!-- ignore if tag category is empty -->
-      {% unless i == '' %}
-      <h5>Filter by {{ i }}</h5>
-      <ul class="nav">
-        <!-- loop through collection tags -->
-    	  {% for t in collection.all_tags %}
-    	  <!-- if tag contains the category title -->
-    	  {% if t contains i %}
-    	  <!-- strip out tag category prefix and add/remove link for tag filtering -->
-    	  {% if current_tags contains t %}
-    	  <li>{{ t | remove: i | remove: '_' | append: '&nbsp;x' | link_to_remove_tag: t }}</li>
-    	  {% else %}
-    	  <li>{{ t | remove: i | remove: '_' | link_to_add_tag: t }}</li>
-    	  {% endif %}
-    	  {% endif %}
-    	  {% endfor %}
-      </ul>
-      {% endunless %}
+        <!-- ignore if tag category is empty -->
+        {% unless i == '' %}
+        <div class="advanced-filter-overlay__filters__filter-group js-filter">
+          <h2 class="advanced-filter-overlay__filters__filter-group__label">{{ i }}</h2>
+          <!-- loop through collection tags -->
+      	  {% for t in collection.all_tags %}
+        	  <!-- if tag contains the category title -->
+        	  {% if t contains i %}
+          	  <!-- strip out tag category prefix and add/remove link for tag filtering -->
+          	  {% if current_tags contains t %}
+          	  {{ t | remove: i | remove: '_' | append: '&nbsp;x' | link_to_remove_tag: t }}
+          	  {% else %}
+          	  {{ t | remove: i | remove: '_' | link_to_add_tag: t }}
+          	  {% endif %}
+        	  {% endif %}
+      	  {% endfor %}
+        </div>
+        {% endunless %}
       {% endfor %}
 
     {% endif %}

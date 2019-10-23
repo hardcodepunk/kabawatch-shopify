@@ -21,7 +21,71 @@ for (var i = 0; i < advancedFilterButtons.length; i++) {
     }
   });
 }
-/* advanced filter */
+
+var filters = document.querySelectorAll('.js-filter a');
+for (var i = 0; i < filters.length; i++) {
+  filters[i].addEventListener('click', toggleFilter);
+}
+
+function updateURL() {
+  console.log('inside');
+  if (history.pushState) {
+
+    console.log('push');
+    var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '';
+    console.log(newUrl);
+    //window.history.pushState({path:newurl},'',newurl);
+  }
+}
+
+
+function toggleFilter(e) {
+  // prevent normal anchor behaviour
+  e.preventDefault();
+
+  // emptying the shop
+  var productContainer = document.getElementById('product-container');
+  while (productContainer.firstChild) {
+    productContainer.removeChild(productContainer.firstChild);
+  }
+
+  // filling the shop
+  // preparing url
+  if ( window.location.pathname == '/' ) {
+    // var url = window.location.protocol + "//" + window.location.host + window.location.pathname + 'collections/all';
+    // window.history.pushState({path: url}, '', url);
+    console.log('index');
+    var url = this.href + "/" + 'collections/all';
+  } else {
+    var url = this.href;
+  }
+
+  console.log(url);
+
+  //updateURL();
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      parser = new DOMParser();
+      var doc = parser.parseFromString(xhr.responseText, "text/html");
+      xhrProductContainer = doc.getElementById('product-container');
+      console.log(xhrProductContainer);
+      while (xhrProductContainer.firstChild) {
+        productContainer.appendChild(xhrProductContainer.firstChild);
+      }
+    }
+  };
+  xhr.send();
+}
+
+
+
+
+
+
+/* advanced filter
 
 var currentURL = new URL(window.location);
 var currentParams = currentURL.searchParams.get('sort_by');
@@ -77,4 +141,4 @@ var template = `
   </div>
 `;
 
-render(template, document.querySelector('#sort-by-container'));
+render(template, document.querySelector('#sort-by-container')); */

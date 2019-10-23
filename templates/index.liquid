@@ -1,5 +1,5 @@
 <section class="shop">
-  <ul class="shop__list">
+  <ul id="product-container" class="shop__list">
     {% for product in collections['all'].products %}
     <li class="shop__list__item">
       <a href="{{ product.url | within: collection }}">
