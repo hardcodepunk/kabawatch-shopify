@@ -22,10 +22,13 @@ for (var i = 0; i < advancedFilterButtons.length; i++) {
   });
 }
 
-var filters = document.querySelectorAll('.js-filter a');
-for (var i = 0; i < filters.length; i++) {
-  filters[i].addEventListener('click', toggleFilter);
+var filterAnchors = document.querySelectorAll('.js-filter a');
+
+for (var i = 0; i < filterAnchors.length; i++) {
+  filterAnchors[i].addEventListener('click', toggleFilter);
 }
+
+
 
 function toggleFilter(e) {
 
@@ -48,7 +51,22 @@ function toggleFilter(e) {
 
     url = adaptedUrl;
   } else {
+    // urlParams = clickedParam + checkedParam
+
+    // get param of clicked filter
     var url = this.href;
+    console.log(url + ' ' + 'this.href clicked filter');
+    var urlParam = url.split('/').pop();
+    console.log(urlParam + ' ' + 'param clicked filter');
+
+
+    // get base url actual location
+    var urlLocation = url.split('?', 1)[0];
+    console.log(urlLocation + ' ' + 'actual location');
+
+    var url = this.href;
+
+
     console.log(url + ' ' + 'adapted url');
   }
 
