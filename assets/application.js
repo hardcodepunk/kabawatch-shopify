@@ -27,19 +27,8 @@ for (var i = 0; i < filters.length; i++) {
   filters[i].addEventListener('click', toggleFilter);
 }
 
-function updateURL() {
-  console.log('inside');
-  if (history.pushState) {
-
-    console.log('push');
-    var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '';
-    console.log(newUrl);
-    //window.history.pushState({path:newurl},'',newurl);
-  }
-}
-
-
 function toggleFilter(e) {
+
   // prevent normal anchor behaviour
   e.preventDefault();
 
@@ -49,20 +38,24 @@ function toggleFilter(e) {
     productContainer.removeChild(productContainer.firstChild);
   }
 
-  // filling the shop
   // preparing url
   if ( window.location.pathname == '/' ) {
-    // var url = window.location.protocol + "//" + window.location.host + window.location.pathname + 'collections/all';
-    // window.history.pushState({path: url}, '', url);
-    console.log('index');
-    var url = this.href + "/" + 'collections/all';
+    var url = this.href;
+    var urlParam = url.split('?')[1];
+    var urlIndex = url.split('?', 1)[0];
+    var adaptedUrl = urlIndex + 'collections/all/' + '?' + urlParam;
+    console.log(adaptedUrl + ' ' + 'adapted url');
+
+    url = adaptedUrl;
   } else {
     var url = this.href;
+    console.log(url + ' ' + 'adapted url');
   }
 
-  console.log(url);
-
-  //updateURL();
+  // push parameters to url
+  if (history.pushState) {
+    window.history.pushState({path: url}, '', url);
+  }
 
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url);
