@@ -42,9 +42,9 @@ function toggleFilter(e) {
 
   // all url params in an array
   var urlParamsArray = [];
-
+  console.log(document.getElementById('index__shop') != undefined);
   // preparing url
-  if ( window.location.pathname == '/' ) {
+  if (document.getElementById('index__shop') != undefined) {
     console.log('index');
 
     // get param of clicked filter
@@ -57,7 +57,10 @@ function toggleFilter(e) {
 
     // get param of active filters
     var checkedFilterAnchors = document.querySelectorAll('.js-filter a.is-checked');
+    console.log('checkedFilterAnchors' + ': ' + checkedFilterAnchors);
     for (var i = 0; i < checkedFilterAnchors.length; i++) {
+      console.log('checkedFilterAnchors' + ': ' + checkedFilterAnchors);
+      console.log('yo');
       urlParamsArray.push(checkedFilterAnchors[i].href.split('=').pop());
     }
 
@@ -72,6 +75,7 @@ function toggleFilter(e) {
     console.log(url + ' ' + 'adapted url');
 
   } else {
+    console.log('not index');
     // get param of clicked filter
     var clickedURL = this.href;
     var clickedURLParam = clickedURL.split('/').pop();
