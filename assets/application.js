@@ -23,51 +23,73 @@ for (var i = 0; i < advancedFilterButtons.length; i++) {
 }
 
 var filterAnchors = document.querySelectorAll('.js-filter a');
-
 for (var i = 0; i < filterAnchors.length; i++) {
   filterAnchors[i].addEventListener('click', toggleFilter);
 }
 
-
+console.log(window.location);
 
 function toggleFilter(e) {
 
   // prevent normal anchor behaviour
   e.preventDefault();
-
+  console.log(window.location);
   // emptying the shop
   var productContainer = document.getElementById('product-container');
   while (productContainer.firstChild) {
     productContainer.removeChild(productContainer.firstChild);
   }
 
+  // all url params in an array
+  var urlParamsArray = [];
+
   // preparing url
   if ( window.location.pathname == '/' ) {
-    var url = this.href;
-    var urlParam = url.split('?')[1];
-    var urlIndex = url.split('?', 1)[0];
-    var adaptedUrl = urlIndex + 'collections/all/' + '?' + urlParam;
-    console.log(adaptedUrl + ' ' + 'adapted url');
-
-    url = adaptedUrl;
-  } else {
-    // urlParams = clickedParam + checkedParam
+    console.log('index');
 
     // get param of clicked filter
-    var url = this.href;
-    console.log(url + ' ' + 'this.href clicked filter');
-    var urlParam = url.split('/').pop();
-    console.log(urlParam + ' ' + 'param clicked filter');
+    var clickedURL = this.href;
+    console.log('clickedURL' + ': ' + clickedURL);
+    var clickedURLParam = clickedURL.split('=').pop();
+    urlParamsArray.push(clickedURLParam);
+    console.log('urlParamsArray' + ': ' + urlParamsArray);
+    console.log('clickedURLParam' + ': ' + clickedURLParam);
 
+    // get param of active filters
+    var checkedFilterAnchors = document.querySelectorAll('.js-filter a.is-checked');
+    for (var i = 0; i < checkedFilterAnchors.length; i++) {
+      urlParamsArray.push(checkedFilterAnchors[i].href.split('=').pop());
+    }
 
     // get base url actual location
-    var urlLocation = url.split('?', 1)[0];
-    console.log(urlLocation + ' ' + 'actual location');
-
-    var url = this.href;
+    var baseURL = clickedURL.split('/').slice(0, -1).join('/') + '/';
 
 
+    // join
+    //var urlIndex = clickedURL.split('?', 1)[0];
+    var urlParams = urlParamsArray.join('+');
+    var url = baseURL + 'collections/all/' + urlParams;
     console.log(url + ' ' + 'adapted url');
+
+  } else {
+    // get param of clicked filter
+    var clickedURL = this.href;
+    var clickedURLParam = clickedURL.split('/').pop();
+    urlParamsArray.push(clickedURLParam);
+
+    // get param of active filters
+    var checkedFilterAnchors = document.querySelectorAll('.js-filter a.is-checked');
+    for (var i = 0; i < checkedFilterAnchors.length; i++) {
+      urlParamsArray.push(checkedFilterAnchors[i].href.split('/').pop());
+    }
+
+    // get base url actual location
+    var baseURL = clickedURL.split('/').slice(0, -1).join('/') + '/';
+
+    // join
+    var urlParams = urlParamsArray.join('+');
+    var url = baseURL + urlParams;
+
   }
 
   // push parameters to url
