@@ -114,11 +114,7 @@
         	  <!-- if tag contains the category title -->
         	  {% if t contains i %}
           	  <!-- strip out tag category prefix and add/remove link for tag filtering -->
-          	  {% if current_tags contains t %}
-          	  {{ t | remove: i | remove: '_' | append: '&nbsp;x' | link_to_remove_tag: t }}
-          	  {% else %}
           	  {{ t | remove: i | remove: '_' | link_to_add_tag: t }}
-          	  {% endif %}
         	  {% endif %}
       	  {% endfor %}
         </div>

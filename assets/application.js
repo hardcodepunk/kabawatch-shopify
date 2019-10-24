@@ -27,85 +27,117 @@ for (var i = 0; i < filterAnchors.length; i++) {
   filterAnchors[i].addEventListener('click', toggleFilter);
 }
 
-console.log(window.location);
-
 function toggleFilter(e) {
 
   // prevent normal anchor behaviour
   e.preventDefault();
-  console.log(window.location);
+
   // emptying the shop
   var productContainer = document.getElementById('product-container');
   while (productContainer.firstChild) {
     productContainer.removeChild(productContainer.firstChild);
   }
 
+  // preparing url
   // all url params in an array
   var urlParamsArray = [];
-  console.log(document.getElementById('index__shop') != undefined);
-  // preparing url
+
+  // check if index
   if (document.getElementById('index__shop') != undefined) {
-    console.log('index');
 
-    // get param of clicked filter
-    var clickedURL = this.href;
-    console.log('clickedURL' + ': ' + clickedURL);
-    var clickedURLParam = clickedURL.split('=').pop();
-    urlParamsArray.push(clickedURLParam);
-    console.log('urlParamsArray' + ': ' + urlParamsArray);
-    console.log('clickedURLParam' + ': ' + clickedURLParam);
+    // check if clicked filter is activated or not
+    if (this.classList.contains('is-checked')) {
 
-    // get param of active filters
-    var checkedFilterAnchors = document.querySelectorAll('.js-filter a.is-checked');
-    console.log('checkedFilterAnchors' + ': ' + checkedFilterAnchors);
-    for (var i = 0; i < checkedFilterAnchors.length; i++) {
-      console.log('checkedFilterAnchors' + ': ' + checkedFilterAnchors);
-      console.log('yo');
-      urlParamsArray.push(checkedFilterAnchors[i].href.split('=').pop());
+      // remove checked class from clicked filter anchor
+      this.classList.remove('is-checked');
+
+      // get param of clicked filter
+      var clickedURL = this.href;
+
+      // get param of active filters
+      var checkedFilterAnchors = document.querySelectorAll('.js-filter a.is-checked');
+      for (var i = 0; i < checkedFilterAnchors.length; i++) {
+        urlParamsArray.push(checkedFilterAnchors[i].href.split('=').pop());
+      }
+
+      // get base url actual location
+      var baseURL = clickedURL.split('/').slice(0, -1).join('/') + '/';
+
+      // join
+      var urlParams = urlParamsArray.join('+');
+      var url = baseURL + 'collections/all/' + urlParams;
+
+    } else {
+
+      // add checked class from clicked filter anchor
+      this.classList.add('is-checked');
+
+      // get param of clicked filter
+      var clickedURL = this.href;
+
+      // get param of active filters
+      var checkedFilterAnchors = document.querySelectorAll('.js-filter a.is-checked');
+      for (var i = 0; i < checkedFilterAnchors.length; i++) {
+        urlParamsArray.push(checkedFilterAnchors[i].href.split('=').pop());
+      }
+
+      // get base url actual location
+      var baseURL = clickedURL.split('/').slice(0, -1).join('/') + '/';
+
+      // join strings to url
+      var urlParams = urlParamsArray.join('+');
+      var url = baseURL + 'collections/all/' + urlParams;
+
     }
-
-    // get base url actual location
-    var baseURL = clickedURL.split('/').slice(0, -1).join('/') + '/';
-
-
-    // join
-    //var urlIndex = clickedURL.split('?', 1)[0];
-    var urlParams = urlParamsArray.join('+');
-    var url = baseURL + 'collections/all/' + urlParams;
-    console.log(url + ' ' + 'adapted url');
-
   } else {
-    console.log('not index');
-    // get param of clicked filter
-    var clickedURL = this.href;
-    var clickedURLParam = clickedURL.split('/').pop();
-    urlParamsArray.push(clickedURLParam);
 
-    // get param of active filters
-    var checkedFilterAnchors = document.querySelectorAll('.js-filter a.is-checked');
-    for (var i = 0; i < checkedFilterAnchors.length; i++) {
-      urlParamsArray.push(checkedFilterAnchors[i].href.split('/').pop());
+    // check if clicked filter is activated or not
+    if (this.classList.contains('is-checked')) {
+
+      // add checked class from clicked filter anchor
+      this.classList.remove('is-checked');
+
+      // get param of clicked filter
+      var clickedURL = this.href;
+
+      // get param of active filters
+      var checkedFilterAnchors = document.querySelectorAll('.js-filter a.is-checked');
+      for (var i = 0; i < checkedFilterAnchors.length; i++) {
+        urlParamsArray.push(checkedFilterAnchors[i].href.split('/').pop());
+      }
+
+      // get base url actual location
+      var baseURL = clickedURL.split('/').slice(0, -1).join('/') + '/';
+
+      // join strings to url
+      var urlParams = urlParamsArray.join('+');
+      var url = baseURL + urlParams;
+    } else {
+
+      // add checked class from clicked filter anchor
+      this.classList.add('is-checked');
+
+      // get param of clicked filter
+      var clickedURL = this.href;
+
+      // get param of active filters
+      var checkedFilterAnchors = document.querySelectorAll('.js-filter a.is-checked');
+      for (var i = 0; i < checkedFilterAnchors.length; i++) {
+        urlParamsArray.push(checkedFilterAnchors[i].href.split('/').pop());
+      }
+
+      // get base url actual location
+      var baseURL = clickedURL.split('/').slice(0, -1).join('/') + '/';
+
+      // join strings to url
+      var urlParams = urlParamsArray.join('+');
+      var url = baseURL + urlParams;
     }
-
-    // get base url actual location
-    var baseURL = clickedURL.split('/').slice(0, -1).join('/') + '/';
-
-    // join
-    var urlParams = urlParamsArray.join('+');
-    var url = baseURL + urlParams;
-
   }
 
   // push parameters to url
   if (history.pushState) {
     window.history.pushState({path: url}, '', url);
-  }
-
-  // add checked class to filter button
-  if (this.classList.contains('is-checked')) {
-    this.classList.remove('is-checked');
-  } else {
-    this.classList.add('is-checked');
   }
 
   var xhr = new XMLHttpRequest();
@@ -115,7 +147,6 @@ function toggleFilter(e) {
       parser = new DOMParser();
       var doc = parser.parseFromString(xhr.responseText, "text/html");
       xhrProductContainer = doc.getElementById('product-container');
-      console.log(xhrProductContainer);
       while (xhrProductContainer.firstChild) {
         productContainer.appendChild(xhrProductContainer.firstChild);
       }
