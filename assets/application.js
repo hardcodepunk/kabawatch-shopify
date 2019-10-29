@@ -27,20 +27,26 @@ for (var i = 0; i < filterAnchors.length; i++) {
   filterAnchors[i].addEventListener('click', toggleFilter);
 }
 
+var sortAnchors = document.querySelectorAll('.js-sort a');
+for (var i = 0; i < sortAnchors.length; i++) {
+  sortAnchors[i].addEventListener('click', toggleSort);
+}
+
+
+
 function toggleFilter(e) {
 
   // prevent normal anchor behaviour
   e.preventDefault();
+
+  // all url params in an array
+  var urlParamsArray = [];
 
   // emptying the shop
   var productContainer = document.getElementById('product-container');
   while (productContainer.firstChild) {
     productContainer.removeChild(productContainer.firstChild);
   }
-
-  // preparing url
-  // all url params in an array
-  var urlParamsArray = [];
 
   // check if index
   if (document.getElementById('index__shop') != undefined) {
@@ -59,7 +65,6 @@ function toggleFilter(e) {
       for (var i = 0; i < checkedFilterAnchors.length; i++) {
         urlParamsArray.push(checkedFilterAnchors[i].href.split('=').pop());
       }
-
       // get base url actual location
       var baseURL = clickedURL.split('/').slice(0, -1).join('/') + '/';
 
@@ -86,7 +91,10 @@ function toggleFilter(e) {
 
       // join strings to url
       var urlParams = urlParamsArray.join('+');
-      var url = baseURL + 'collections/all/' + urlParams;
+      console.log('urlParams' + ': ' + urlParams);
+
+      var url = baseURL + 'collections/all/' + urlParams + '?sort_by=price-ascending';
+      console.log('url' + ': ' + url);
 
     }
   } else {
@@ -155,14 +163,106 @@ function toggleFilter(e) {
   xhr.send();
 }
 
+function toggleSort(e) {
+
+  e.preventDefault()
+
+  // all url params in an array
+  var urlParamsArray = [];
+
+  // emptying the shop
+  var productContainer = document.getElementById('product-container');
+  while (productContainer.firstChild) {
+    productContainer.removeChild(productContainer.firstChild);
+  }
+
+  var checkedFilterAnchors = [];
+  var checkedSortAnchor = document.querySelector('.js-sort a.is-checked');
+
+  // check if clicked filter is activated or not
+  if (this.classList.contains('is-checked')) {
+
+    this.classList.remove('is-checked');
+
+    // get param of clicked filter
+    var clickedURL = this.href;
+    console.log('clickedURL' + ': ' + clickedURL);
+
+    // get param of active filters
+    var checkedFilterAnchors = document.querySelectorAll('.js-filter a.is-checked');
+    for (var i = 0; i < checkedFilterAnchors.length; i++) {
+      urlParamsArray.push(checkedFilterAnchors[i].href.split('/').pop());
+    }
+
+    // get base url actual location
+    var baseURL = clickedURL.split('/').slice(0, -1).join('/') + '/';
 
 
+    // join strings to url
+    var urlParams = urlParamsArray.join('+');
+    console.log('urlParams' + ': ' + urlParams);
 
+    var url = baseURL + urlParams;
 
+  } else {
 
-/* advanced filter
+    // reset sort filter
+    if ( checkedSortAnchor ) {
+      document.querySelector('.js-sort a.is-checked').classList.remove('is-checked');
+    }
 
-var currentURL = new URL(window.location);
+    this.classList.add('is-checked');
+
+    // get param of clicked filter
+    var clickedURL = this.href;
+    console.log('clickedURL' + ': ' + clickedURL);
+
+    // get param of active filters
+    var checkedFilterAnchors = document.querySelectorAll('.js-filter a.is-checked');
+    for (var i = 0; i < checkedFilterAnchors.length; i++) {
+      urlParamsArray.push(checkedFilterAnchors[i].href.split('/').pop());
+    }
+
+    var checkedSortAnchor = document.querySelector('.js-sort a.is-checked');
+    var sortParam = checkedSortAnchor.href.split('=').pop();
+
+    console.log('sortParam' + ': ' + sortParam);
+
+    console.log('checkedSortAnchor' + ': ' + checkedSortAnchor);
+
+    // get base url actual location
+    var baseURL = clickedURL.split('/').slice(0, -1).join('/') + '/';
+
+    console.log('baseURL' + ': ' + baseURL);
+
+    // join strings to url
+    var urlParams = urlParamsArray.join('+');
+    console.log('urlParams' + ': ' + urlParams);
+
+    var url = baseURL + urlParams + '?=' + sortParam;
+  }
+
+  // push parameters to url
+  if (history.pushState) {
+    window.history.pushState({path: url}, '', url);
+  }
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', url);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4) {
+      parser = new DOMParser();
+      var doc = parser.parseFromString(xhr.responseText, "text/html");
+      xhrProductContainer = doc.getElementById('product-container');
+      while (xhrProductContainer.firstChild) {
+        productContainer.appendChild(xhrProductContainer.firstChild);
+      }
+    }
+  };
+  xhr.send();
+}
+
+/* var currentURL = new URL(window.location);
 var currentParams = currentURL.searchParams.get('sort_by');
 var urlSearchParams = new URLSearchParams(
   window.location.search.indexOf("sort_by") > -1

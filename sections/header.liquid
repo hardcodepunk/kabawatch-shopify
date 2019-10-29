@@ -89,7 +89,14 @@
   </div>
   <div class="advanced-filter-overlay__filters">
 
-    <!-- <div id="sort-by-container" class="advanced-filter-overlay__filters__filter-group"></div> -->
+    <div id="sort-by-container" class="advanced-filter-overlay__filters__filter-group js-sort">
+      <h2 class="advanced-filter-overlay__filters__filter-group__label">Sort by:</h2>
+      <a href="?sort_by=price-ascending">Price: Low - High</a>
+      <a href="?sort_by=price-descending">Price: High - Low</a>
+      <a href="?sort_by=title-ascending">A-Z</a>
+      <a href="?sort_by=title-descending">Z-A</a>
+    </div>
+
     {% if template == 'index' %}
       {% assign collection = collections.all %}
     {% endif %}
