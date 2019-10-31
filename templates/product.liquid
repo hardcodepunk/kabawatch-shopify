@@ -42,7 +42,22 @@
         <img class="shop-item__visual__img" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ image.alt | escape }}"/>
       {% endfor %}
     </div>
-    <input type="number" id="Quantity" name="quantity" value="1" min="1">
+    <div class="hidden-input-group">
+      <select name="id" id="productSelect">
+        {% for variant in product.variants %}
+          {% if variant.available %}
+            <option value="{{ variant.id }}">
+              {{ variant.title }} - {{ variant.price | money_with_currency }}
+            </option>
+          {% else %}
+            <option disabled="disabled">
+              {{ variant.title }} - sold out
+            </option>
+          {% endif %}
+        {% endfor %}
+      </select>
+      <input type="number" id="Quantity" name="quantity" value="1" min="1">
+    </div>
     <button class="cta" type="submit" name="add" id="AddToCart">Add to shopping cart</button>
     <article class="shop-item__article">
       {{ product.description }}
