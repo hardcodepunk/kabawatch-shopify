@@ -22,6 +22,23 @@ for (var i = 0; i < advancedFilterButtons.length; i++) {
   });
 }
 
+var sliderImgs = document.querySelectorAll('.js-display-slider-img');
+var sliderProjection = document.getElementById('slider-projection');
+for (var i = 0; i < sliderImgs.length; i++) {
+  sliderImgs[i].addEventListener('click', function() {
+
+    if (this.classList.contains('being-displayed')) {
+
+    } else {
+      for (var i = 0; i < sliderImgs.length; i++) {
+        sliderImgs[i].classList.remove('being-displayed');
+      }
+      this.classList.add('being-displayed');
+      sliderProjection.src = this.src;
+    }
+  });
+}
+
 var filterAnchors = document.querySelectorAll('.js-filter a');
 for (var i = 0; i < filterAnchors.length; i++) {
   filterAnchors[i].addEventListener('click', toggleFilter);

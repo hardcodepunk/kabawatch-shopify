@@ -1,19 +1,20 @@
 <section class="shop">
-  <ul id="product-container" class="shop__list">
+  <div id="product-container" class="shop__list">
     {% for product in collection.products %}
-    <li class="shop__list__item">
-      <a href="{{ product.url | within: collection }}">
+      <a href="{{ product.url | within: collection }}" class="shop__list__item">
         <div class="shop__list__item__visual">
-          <img class="shop__list__item__visual__img" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}"/>
+          <div class="shop__list__item__visual__holder">
+            <img class="shop__list__item__visual__holder__img" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}"/>
+          </div>
         </div>
         <div class="shop__list__item__text">
           <h2>{{ product.title }}</h2>
           <h3>{{ product.vendor }}</h3>
           <h4>{{ product.price | money }}</h4>
           <!--{% unless product.available %}<br><strong>sold out</strong>{% endunless %}-->
+          <p>{{ product.metafields.global.description_tag }}</p>
         </div>
       </a>
-    </li>
     {% endfor %}
-  </ul>
+  </div>
 </section>

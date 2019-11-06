@@ -10,10 +10,20 @@
           <div class="cart__list__item__visual">
             <img class="cart__list__item__visual__img" src="{{ item | img_url: 'large' }}" alt="{{ item.title | escape }}"/>
           </div>
-          <div class="cart__list__item__text">
-            <h2>{{ item.product.title }}</h2>
-            <h3>{{ item.product.vendor }}</h3>
-            <h4>{{ item.price | money }}</h4>
+          <div class="cart__list__item__meta">
+            <div class="cart__list__item__meta__text">
+              <h2>{{ item.product.title }}</h2>
+              <h3>{{ item.product.vendor }}</h3>
+              <h4>{{ item.price | money }}</h4>
+            </div>
+            <div class="cart__list__item__meta__tools">
+              <div class="hidden-input-group">
+                <a href="{{ item.url }}">{{ item.product.title }}</a>
+                {{ item.variant.title }}
+                <input type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0">
+              </div>
+              <button class="cart__list__item__meta__tools__cta" href="/cart/change?line={{ forloop.index }}&amp;quantity=0">Remove</button>
+            </div>
           </div>
         </li>
         {% endfor %}
