@@ -50,21 +50,25 @@
           </li>
         {% endfor %}
       </ul>
-      <div class="hidden-input-group">
-        <select name="id" id="productSelect">
-          {% for variant in product.variants %}
-            {% if variant.available %}
-              <option value="{{ variant.id }}">
-                {{ variant.title }} - {{ variant.price | money_with_currency }}
-              </option>
-            {% else %}
-              <option disabled="disabled">
-                {{ variant.title }} - sold out
-              </option>
-            {% endif %}
-          {% endfor %}
-        </select>
-        <input type="number" id="Quantity" name="quantity" value="1" min="1">
+      <input type="number" id="Quantity" name="quantity" value="1" min="1">
+      <div class="product-variants infiniteoptions">
+        <ul>
+        {% for variant in product.variants %}
+      	  <li class="{% cycle 'odds': 'odd', 'even' %}">
+      		  {% if variant.available %}<input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" {% if forloop.first %}checked="checked"{% endif %} />
+      			  <label for="radio_{{ variant.id }}" class="radio">
+      				  <strong>{{ variant.title | escape }}</strong> for <span class="bold-blue">{{ variant.price | money }}</span>
+      				  {% if variant.price < variant.compare_at_price %}<del>{{ variant.compare_at_price | money }}</del>{% endif %}
+      			  </label>
+      		  {% else %}
+      			  <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" disabled="disabled" />
+      			  <label for="radio_{{ variant.id }}" class="radio">
+      				  <strong>{{ variant.title }}</strong> is temporarily unavailable
+      			  </label>
+      		  {% endif %}
+      	  </li>
+        {% endfor %}
+        </ul>
       </div>
       <button class="cta" type="submit" name="add" id="AddToCart">Add to shopping cart</button>
     </div>

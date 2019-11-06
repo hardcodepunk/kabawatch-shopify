@@ -17,9 +17,11 @@
         </li>
       {% endfor %}
     </ul>
-    <div class="shop-filter__advanced js-toggle-advanced-filter"><span class="shop-filter__advanced__capitals">Filter</span><br>Advanced</div>
+    {% if template == 'index' or template == 'collection' %}
+      <div class="shop-filter__advanced js-toggle-advanced-filter"><span class="shop-filter__advanced__capitals">Filter</span><br>Advanced</div>
+    {% endif %}
   </div>
-</header>
+</header> 
 
 <!-- menu overlay -->
 <div class="menu-overlay">
