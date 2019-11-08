@@ -15,18 +15,22 @@
               <h2>{{ item.product.title }}</h2>
               <h3>{{ item.product.vendor }}</h3>
               <h4>{{ item.price | money }}</h4>
-              <h5>{{ item.variant.title }}</h5>
-
+              {% assign hide_default_title = true %}
+              {% if item.product.variants.size == 1 and item.product.variants.first.title contains 'Default' %}
+                {% assign hide_default_title = false %}
+              {% endif %}
+              {% if hide_default_title %}
+                <span class="cart__list__item__meta__text__variant">{{ item.variant.title }}</span>
+              {% endif %}
             </div>
             <div class="cart__list__item__meta__tools">
               <div class="hidden-input-group">
                 <a href="{{ item.url }}">{{ item.product.title }}</a>
               </div>
-              <h4>
-
+              <div class="number-input-group">
                 <input type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0">
-              </h4>
-              <button class="cart__list__item__meta__tools__cta" href="/cart/change?line={{ forloop.index }}&amp;quantity=0">Remove</button>
+              </div>
+              <button class="cart__list__item__meta__tools__cta" href="/cart/change?line={{ forloop.index }}&amp;quantity=0">Update</button>
             </div>
           </div>
         </li>
@@ -88,6 +92,7 @@
     </div>
   </form>-->
 {% else %}
-  <h1>Your cart</h1>
-  Cart is empty
+<section class="cart">
+  <h1>Your cart is empty.</h1>
+</section>
 {% endif %}

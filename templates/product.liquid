@@ -50,20 +50,21 @@
           </li>
         {% endfor %}
       </ul>
-      <input type="number" id="Quantity" name="quantity" value="1" min="1">
+      <div class="number-input-group">
+        <input type="number" id="Quantity" name="quantity" value="1" min="1">
+      </div>
       <div class="product-variants infiniteoptions">
-        <ul>
+        <ul class="radio-input-group">
         {% for variant in product.variants %}
       	  <li class="{% cycle 'odds': 'odd', 'even' %}">
       		  {% if variant.available %}<input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" {% if forloop.first %}checked="checked"{% endif %} />
       			  <label for="radio_{{ variant.id }}" class="radio">
-      				  <strong>{{ variant.title | escape }}</strong> for <span class="bold-blue">{{ variant.price | money }}</span>
-      				  {% if variant.price < variant.compare_at_price %}<del>{{ variant.compare_at_price | money }}</del>{% endif %}
+      				  {{ variant.title | escape }}
       			  </label>
       		  {% else %}
       			  <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" disabled="disabled" />
       			  <label for="radio_{{ variant.id }}" class="radio">
-      				  <strong>{{ variant.title }}</strong> is temporarily unavailable
+      				  {{ variant.title }}
       			  </label>
       		  {% endif %}
       	  </li>
