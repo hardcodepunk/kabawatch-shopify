@@ -57,10 +57,24 @@
         <ul class="radio-input-group">
         {% for variant in product.variants %}
       	  <li class="{% cycle 'odds': 'odd', 'even' %}">
-      		  {% if variant.available %}<input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" {% if forloop.first %}checked="checked"{% endif %} />
+      		  {% if variant.available %}
+            {% assign hide_default_title = true %}
+            {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+              {% assign hide_default_title = false %}
+            {% endif %}
+            {% if hide_default_title %}
+              <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" {% if forloop.first %}checked="checked"{% endif %} />
       			  <label for="radio_{{ variant.id }}" class="radio">
       				  {{ variant.title | escape }}
       			  </label>
+            {% else %}
+              <div class="hidden-input-group">
+                <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" {% if forloop.first %}checked="checked"{% endif %} />
+                <label for="radio_{{ variant.id }}" class="radio">
+                  {{ variant.title | escape }}
+                </label>
+              </div>
+            {% endif %}
       		  {% else %}
       			  <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" disabled="disabled" />
       			  <label for="radio_{{ variant.id }}" class="radio">
