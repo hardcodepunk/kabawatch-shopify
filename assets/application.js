@@ -118,6 +118,8 @@ function toggleFilter(e) {
       // get base url actual location
       var baseURL = clickedURL.split('/').slice(0, -1).join('/') + '/';
 
+      console.log(baseUrl);
+
       // join strings to url
       var urlParams = urlParamsArray.join('+');
 

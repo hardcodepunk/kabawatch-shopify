@@ -12,7 +12,7 @@
       {% for link in linklists.categories.links %}
         {% assign child_list_handle = link.title | handleize %}
         <li class="shop-filter__categories__item {% if template contains 'collection' and link.title == collection.title %} is-selected {% endif %}">
-          <a href="{{ link.url }}">{{ link.title }}</a>
+          <a href="{{ link.url }}/">{{ link.title }}</a>
           <span class="shop-filter__categories__item__arrow"></span>
         </li>
       {% endfor %}
