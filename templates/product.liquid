@@ -33,7 +33,7 @@
 <section class="shop-item">
   <div class="show">
     <div class="shop-item__visual">
-      <img id="slider-projection" class="shop-item__visual__img" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ image.alt | escape }}"/>
+      <img id="slider-projection" class="shop-item__visual__img" src="{{ product.featured_image.src | img_url: 'master' }}" alt="{{ image.alt | escape }}"/>
     </div>
     <ul class="shop-item__gallery">
       {% for image in product.images %}
@@ -41,8 +41,8 @@
           <div class="shop-item__gallery__item__visual">
             <img class="shop-item__gallery__item__visual__img" src="{{ image.src | img_url: 'large' }}" alt="{{ image.alt | escape }}"/>
           </div>
-        </li>
-      {% endfor %} 
+        </li> 
+      {% endfor %}
     </ul>
   </div>
   <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
