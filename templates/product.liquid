@@ -30,65 +30,82 @@
 
 {% assign current_variant = product.selected_or_first_available_variant %}
 {% assign featured_image = current_variant.featured_image | default: product.featured_image %}
-<section class="shop-item wrapper">
+<section class="shop-item">
+  <div class="show">
+    <div class="shop-item__visual">
+      <img id="slider-projection" class="shop-item__visual__img" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ image.alt | escape }}"/>
+    </div>
+    <ul class="shop-item__gallery">
+      {% for image in product.images %}
+        <li class="shop-item__gallery__item js-display-slider-img">
+          <div class="shop-item__gallery__item__visual">
+            <img class="shop-item__gallery__item__visual__img" src="{{ image.src | img_url: 'large' }}" alt="{{ image.alt | escape }}"/>
+          </div>
+        </li>
+      {% endfor %} 
+    </ul>
+  </div>
   <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
-    <div class="shop-item__meta">
+    <div class="wrapper">
+      <!--<div class="shop-item__meta">
+        <div class="shop-item__visual">
+          <img id="slider-projection" class="shop-item__visual__img" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ image.alt | escape }}"/>
+        </div>
+        <ul class="shop-item__gallery">
+          {% for image in product.images %}
+            <li class="shop-item__gallery__item">
+              <div class="shop-item__gallery__item__visual">
+                <img class="shop-item__gallery__item__visual__img js-display-slider-img" src="{{ image.src | img_url: 'large' }}" alt="{{ image.alt | escape }}"/>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>-->
+      <div class="shop-item__meta">
+        <div class="number-input-group">
+          <input type="number" id="Quantity" name="quantity" value="1" min="1">
+        </div>
+        <div class="product-variants infiniteoptions">
+          <ul class="radio-input-group">
+          {% for variant in product.variants %}
+        	  <li class="{% cycle 'odds': 'odd', 'even' %}">
+        		  {% if variant.available %}
+              {% assign hide_default_title = true %}
+              {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+                {% assign hide_default_title = false %}
+              {% endif %}
+              {% if hide_default_title %}
+                <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" {% if forloop.first %}checked="checked"{% endif %} />
+        			  <label for="radio_{{ variant.id }}" class="radio">
+        				  {{ variant.title | escape }}
+        			  </label>
+              {% else %}
+                <div class="hidden-input-group">
+                  <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" {% if forloop.first %}checked="checked"{% endif %} />
+                  <label for="radio_{{ variant.id }}" class="radio">
+                    {{ variant.title | escape }}
+                  </label>
+                </div>
+              {% endif %}
+        		  {% else %}
+        			  <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" disabled="disabled" />
+        			  <label for="radio_{{ variant.id }}" class="radio">
+        				  {{ variant.title }}
+        			  </label>
+        		  {% endif %}
+        	  </li>
+          {% endfor %}
+          </ul>
+        </div>
+        <button class="cta" type="submit" name="add" id="AddToCart">Add to shopping cart</button>
+      </div>
       <div class="shop-item__text">
         <h2 class="shop-item__text__name">{{ product.title }}</h2>
-        <h3 class="shop-item__text__brand">$wag merk</h3>
+        <h3 class="shop-item__text__brand">{{ product.vendor }}</h3>
         <h4 class="shop-item__text__price">{{ current_variant.price | money }}</h4>
       </div>
-      <div class="shop-item__visual">
-        <img id="slider-projection" class="shop-item__visual__img" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ image.alt | escape }}"/>
-      </div>
-      <ul class="shop-item__gallery">
-        {% for image in product.images %}
-          <li class="shop-item__gallery__item">
-            <div class="shop-item__gallery__item__visual">
-              <img class="shop-item__gallery__item__visual__img js-display-slider-img" src="{{ image.src | img_url: 'large' }}" alt="{{ image.alt | escape }}"/>
-            </div>
-          </li>
-        {% endfor %}
-      </ul>
-      <div class="number-input-group">
-        <input type="number" id="Quantity" name="quantity" value="1" min="1">
-      </div>
-      <div class="product-variants infiniteoptions">
-        <ul class="radio-input-group">
-        {% for variant in product.variants %}
-      	  <li class="{% cycle 'odds': 'odd', 'even' %}">
-      		  {% if variant.available %}
-            {% assign hide_default_title = true %}
-            {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
-              {% assign hide_default_title = false %}
-            {% endif %}
-            {% if hide_default_title %}
-              <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" {% if forloop.first %}checked="checked"{% endif %} />
-      			  <label for="radio_{{ variant.id }}" class="radio">
-      				  {{ variant.title | escape }}
-      			  </label>
-            {% else %}
-              <div class="hidden-input-group">
-                <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" {% if forloop.first %}checked="checked"{% endif %} />
-                <label for="radio_{{ variant.id }}" class="radio">
-                  {{ variant.title | escape }}
-                </label>
-              </div>
-            {% endif %}
-      		  {% else %}
-      			  <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" disabled="disabled" />
-      			  <label for="radio_{{ variant.id }}" class="radio">
-      				  {{ variant.title }}
-      			  </label>
-      		  {% endif %}
-      	  </li>
-        {% endfor %}
-        </ul>
-      </div>
-      <button class="cta" type="submit" name="add" id="AddToCart">Add to shopping cart</button>
+      <article class="shop-item__article">
+        {{ product.description }}
+      </article>
     </div>
-    <article class="shop-item__article">
-      {{ product.description }}
-    </article>
   </form>
 </section>
