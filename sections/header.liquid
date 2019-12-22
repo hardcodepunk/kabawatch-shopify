@@ -3,6 +3,11 @@
   <div class="site-navigation wrapper sub-header">
     <a href="{{ shop.url }}" class="site-navigation__logo">Kabawatch</a>
     <div class="site-navigation__tools">
+      <ul class="site-navigation__menu">
+        <li class="site-navigation__menu__item"><a href="{{ shop.url }}">Shop</a></li>
+        <li class="site-navigation__menu__item"><a href="/pages/about">About</a></li>
+        <li class="site-navigation__menu__item"><a href="/pages/contact">Contact</a></li>
+      </ul>
       <a class="site-navigation__tools__cart" href="{{ routes.cart_url }}"><span id="cart-counter" class="site-navigation__tools__cart__counter">{{ cart.item_count }}</span><br>items in cart</a>
       <div class="menu-button js-toggle-menu"><span class="menu-button__icon"></span></div>
     </div>
@@ -16,7 +21,7 @@
           <span class="shop-filter__categories__item__arrow"></span>
         </li>
       {% endfor %}
-    </ul>
+    </ul> 
     {% if template == 'index' or template == 'collection' %}
       <div class="shop-filter__advanced js-toggle-advanced-filter"><span class="shop-filter__advanced__capitals">Filter</span><br>Advanced</div>
     {% endif %}
