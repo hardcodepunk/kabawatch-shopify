@@ -2,11 +2,7 @@
   <div id="product-container" class="shop__list">
     {% for product in collection.products %}
       <a href="{{ product.url | within: collection }}" class="shop__list__item">
-        <div class="shop__list__item__visual">
-          <div class="shop__list__item__visual__holder">
-            <img class="shop__list__item__visual__holder__img" src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}"/>
-          </div>
-        </div>
+        <div class="shop__list__item__visual" style="background: center no-repeat url({{ product.featured_image.src | img_url: 'large' }}); background-size: cover;"></div>
         <div class="shop__list__item__text">
           <h2>{{ product.title }}</h2>
           <h3>{{ product.vendor }}</h3>

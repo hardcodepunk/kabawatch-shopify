@@ -1,7 +1,9 @@
 <!-- header -->
 <header class="header">
   <div class="site-navigation wrapper sub-header">
-    <a href="{{ shop.url }}" class="site-navigation__logo">Kabawatch</a>
+    <a href="{{ shop.url }}" class="site-navigation__logo">
+      <img class="site-navigation__logo__img" src="{{ 'logo.svg' | asset_url }}" alt="Kabawatch logo"/>
+    </a>
     <div class="site-navigation__tools">
       <ul class="site-navigation__menu">
         <li class="site-navigation__menu__item"><a href="{{ shop.url }}">Shop</a></li>
@@ -21,7 +23,7 @@
           <span class="shop-filter__categories__item__arrow"></span>
         </li>
       {% endfor %}
-    </ul> 
+    </ul>
     {% if template == 'index' or template == 'collection' %}
       <div class="shop-filter__advanced js-toggle-advanced-filter"><span class="shop-filter__advanced__capitals">Filter</span><br>Advanced</div>
     {% endif %}
