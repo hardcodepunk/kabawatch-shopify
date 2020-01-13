@@ -35,7 +35,6 @@ var sliderItems = document.querySelectorAll('.shop-item__gallery__item');
 var sliderProjection = document.getElementById('slider-projection');
 for (var i = 0; i < sliderItems.length; i++) {
   sliderItems[i].addEventListener('click', function() {
-    console.log(this);
     if (this.classList.contains('is-being-displayed')) {
 
     } else {
@@ -45,6 +44,87 @@ for (var i = 0; i < sliderItems.length; i++) {
       this.classList.add('is-being-displayed');
       sliderProjection.src = this.querySelector('.shop-item__gallery__item__visual__img').src;
       var img = this.querySelector('.shop-item__gallery__item__visual__img');
+
+      displayedItem = document.querySelector('li.shop-item__gallery__item.is-being-displayed');
+      currentLocation = sliderItemsArray.indexOf(displayedItem) + 1;
+      paginationElementCurrent.innerHTML = currentLocation;
+
+      var previousItem = displayedItem.previousElementSibling;
+      var nextItem = displayedItem.nextElementSibling;
+
+      for (var i = 0; i < galleryBtns.length; i++) {
+        galleryBtns[i].classList.remove('is-hidden');
+      }
+
+      if ( nextItem == null ) {
+        btnNext.classList.add('is-hidden');
+      }
+
+      if (previousItem == null) {
+        btnPrevious.classList.add('is-hidden');
+      }
+    }
+  });
+}
+
+var galleryBtns = document.querySelectorAll('.shop-item__gallery-controls__btn');
+var btnPrevious = document.getElementById('gallery__btn-previous');
+var btnNext = document.getElementById('gallery__btn-next');
+
+var displayedItem = document.querySelector('li.shop-item__gallery__item.is-being-displayed');
+var sliderItemsArray = Array.prototype.slice.call(sliderItems);
+var currentLocation = sliderItemsArray.indexOf(displayedItem) + 1;
+var totalItems = sliderItems.length;
+var paginationElementTotal = document.getElementById('gallery__pagination__total');
+var paginationElementCurrent = document.getElementById('gallery__pagination__current');
+
+paginationElementCurrent.innerHTML = currentLocation;
+paginationElementTotal.innerHTML = totalItems;
+
+for (var i = 0; i < galleryBtns.length; i++) {
+
+  galleryBtns[i].addEventListener('click', function() {
+
+    var displayedItem = document.querySelector('li.shop-item__gallery__item.is-being-displayed');
+
+    if (this == btnPrevious) {
+
+      var previousItem = displayedItem.previousElementSibling;
+
+      displayedItem.classList.remove('is-being-displayed');
+      previousItem.classList.add('is-being-displayed');
+
+      sliderProjection.src = previousItem.querySelector('.shop-item__gallery__item__visual__img').src;
+
+      if (previousItem.previousElementSibling == null) {
+        btnPrevious.classList.add('is-hidden');
+      }
+
+      if (btnNext.classList.contains('is-hidden')) {
+        btnNext.classList.remove('is-hidden');
+      }
+
+      currentLocation -= 1;
+      paginationElementCurrent.innerHTML = currentLocation;
+
+    } else if ( this == btnNext ) {
+
+      var nextItem = displayedItem.nextElementSibling;
+
+      displayedItem.classList.remove('is-being-displayed');
+      nextItem.classList.add('is-being-displayed');
+      sliderProjection.src = nextItem.querySelector('.shop-item__gallery__item__visual__img').src;
+
+      if ( nextItem.nextElementSibling == null ) {
+        btnNext.classList.add('is-hidden');
+      }
+
+      if (btnPrevious.classList.contains('is-hidden')) {
+        btnPrevious.classList.remove('is-hidden');
+      }
+
+      currentLocation += 1;
+      paginationElementCurrent.innerHTML = currentLocation;
     }
   });
 }
@@ -102,11 +182,6 @@ function toggleFilter(e) {
       if ( checkedSortAnchor ) {
         var sortParam = checkedSortAnchor.href.split('=').pop();
         var url = baseURL + 'collections/all/' + urlParams + '?sort_by=' + sortParam;
-        console.log('sortParam' + ': ' + sortParam);
-
-        console.log('checkedSortAnchor' + ': ' + checkedSortAnchor);
-
-        console.log('url' + ': ' + url);
       } else {
         var url = baseURL + 'collections/all/' + urlParams;
       }
@@ -128,19 +203,12 @@ function toggleFilter(e) {
       // get base url actual location
       var baseURL = clickedURL.split('/').slice(0, -1).join('/') + '/';
 
-      console.log(baseUrl);
-
       // join strings to url
       var urlParams = urlParamsArray.join('+');
 
       if ( checkedSortAnchor ) {
         var sortParam = checkedSortAnchor.href.split('=').pop();
         var url = baseURL + 'collections/all/' + urlParams + '?sort_by=' + sortParam;
-        console.log('sortParam' + ': ' + sortParam);
-
-        console.log('checkedSortAnchor' + ': ' + checkedSortAnchor);
-
-        console.log('url' + ': ' + url);
       } else {
         var url = baseURL + 'collections/all/' + urlParams;
       }
@@ -172,11 +240,6 @@ function toggleFilter(e) {
       if ( checkedSortAnchor ) {
         var sortParam = checkedSortAnchor.href.split('=').pop();
         var url = baseURL + urlParams + '?sort_by=' + sortParam;
-        console.log('sortParam' + ': ' + sortParam);
-
-        console.log('checkedSortAnchor' + ': ' + checkedSortAnchor);
-
-        console.log('url' + ': ' + url);
       } else {
         var url = baseURL + urlParams;
       }
@@ -203,11 +266,6 @@ function toggleFilter(e) {
       if ( checkedSortAnchor ) {
         var sortParam = checkedSortAnchor.href.split('=').pop();
         var url = baseURL + urlParams + '?sort_by=' + sortParam;
-        console.log('sortParam' + ': ' + sortParam);
-
-        console.log('checkedSortAnchor' + ': ' + checkedSortAnchor);
-
-        console.log('url' + ': ' + url);
       } else {
         var url = baseURL + urlParams;
       }
@@ -257,7 +315,6 @@ function toggleSort(e) {
 
     // get param of clicked filter
     var clickedURL = this.href;
-    console.log('clickedURL' + ': ' + clickedURL);
 
     // get param of active filters
     var checkedFilterAnchors = document.querySelectorAll('.js-filter a.is-checked');
@@ -274,7 +331,6 @@ function toggleSort(e) {
 
     // join strings to url
     var urlParams = urlParamsArray.join('+');
-    console.log('urlParams' + ': ' + urlParams);
 
     var url = baseURL + urlParams;
 
@@ -289,7 +345,6 @@ function toggleSort(e) {
 
     // get param of clicked filter
     var clickedURL = this.href;
-    console.log('clickedURL' + ': ' + clickedURL);
 
     // get param of active filters
     var checkedFilterAnchors = document.querySelectorAll('.js-filter a.is-checked');
@@ -304,18 +359,11 @@ function toggleSort(e) {
     var checkedSortAnchor = document.querySelector('.js-sort a.is-checked');
     var sortParam = checkedSortAnchor.href.split('=').pop();
 
-    console.log('sortParam' + ': ' + sortParam);
-
-    console.log('checkedSortAnchor' + ': ' + checkedSortAnchor);
-
     // get base url actual location
     var baseURL = clickedURL.split('/').slice(0, -1).join('/') + '/';
 
-    console.log('baseURL' + ': ' + baseURL);
-
     // join strings to url
     var urlParams = urlParamsArray.join('+');
-    console.log('urlParams' + ': ' + urlParams);
 
     var url = baseURL + urlParams + '?sort_by=' + sortParam;
   }
@@ -339,59 +387,3 @@ function toggleSort(e) {
   };
   xhr.send();
 }
-
-/* var currentURL = new URL(window.location);
-var currentParams = currentURL.searchParams.get('sort_by');
-var urlSearchParams = new URLSearchParams(
-  window.location.search.indexOf("sort_by") > -1
-  ? window.location.search.replace(/sort_by/gi,"")
-  : window.location.search
-);
-
-var render = function (template, node) {
-  node.innerHTML = template;
-
-  node.querySelector('#sort-by').addEventListener('change', function() {
-    urlSearchParams.set(this.name, this.value);
-    window.location = `?sort_by${urlSearchParams}`;
-  });
-};
-
-var SortOptions = [{
-  label: 'Featured',
-  value: 'manual'
-}, {
-  label: 'Price: Low to High',
-  value: 'price-ascending'
-}, {
-  label: 'Price: High to Low',
-  value: 'price-descending'
-}, {
-  label: 'A-Z',
-  value: 'title-ascending'
-}, {
-  label: 'Z-A',
-  value: 'title-descending'
-}, {
-  label: 'Oldest to Newest',
-  value: 'created-ascending'
-}, {
-  label: 'Newest to Oldest',
-  value: 'created-descending'
-}, {
-  label: 'Best Selling',
-  value: 'best-selling'
-}];
-
-var template = `
-  <div>
-    <label for="sort-by">Sort by</label>
-    <select id="sort-by">
-      ${SortOptions.map((item) =>
-        `<option value="${item.value}" ${currentParams === item.value ? 'selected' : ''}>${item.label}</option>`
-      ).join('')}
-    </select>
-  </div>
-`;
-
-render(template, document.querySelector('#sort-by-container')); */
