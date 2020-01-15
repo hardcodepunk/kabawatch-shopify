@@ -1,5 +1,5 @@
 {% if cart.item_count > 0 %}
-  <section class="cart">
+  <section class="cart wrapper">
     <h1>Your cart</h1>
 
     <form action="/cart" method="post" novalidate>
@@ -92,7 +92,7 @@
     </div>
   </form>-->
 {% else %}
-<section class="cart">
+<section class="cart wrapper">
   <h1>Your cart is empty.</h1>
 </section>
 {% endif %}

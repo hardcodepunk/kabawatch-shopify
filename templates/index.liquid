@@ -1,4 +1,4 @@
-<section id="index__shop" class="shop">
+<section id="index__shop" class="shop wrapper">
   <div id="product-container" class="shop__list">
     {% for product in collections['all'].products %}
       <a href="{{ product.url | within: collection }}" class="shop__list__item">
