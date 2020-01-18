@@ -2,9 +2,6 @@
 {% assign featured_image = current_variant.featured_image | default: product.featured_image %}
 <section class="shop-item">
   <div class="show">
-    <div class="shop-item__visual">
-      <img id="slider-projection" class="shop-item__visual__img" src="{{ product.featured_image.src | img_url: 'master' }}" alt="{{ image.alt | escape }}"/>
-    </div>
     <div class="shop-item__gallery-controls">
       <div id="gallery__btn-previous" class="shop-item__gallery-controls__btn is-hidden">
         <div class="shop-item__gallery-controls__btn__circles"></div>
@@ -14,6 +11,9 @@
         <div class="shop-item__gallery-controls__btn__circles shop-item__gallery-controls__btn__circles"></div>
       </div>
     </div>
+    <div class="shop-item__visual">
+      <img id="slider-projection" class="shop-item__visual__img" src="{{ product.featured_image.src | img_url: 'master' }}" alt="{{ image.alt | escape }}"/>
+    </div>
     <ul class="shop-item__gallery">
       <li class="shop-item__gallery__item js-display-slider-img is-being-displayed">
         <div class="shop-item__gallery__item__visual">
@@ -21,11 +21,13 @@
         </div>
       </li>
       {% for image in product.images %}
-        <li class="shop-item__gallery__item js-display-slider-img">
-          <div class="shop-item__gallery__item__visual">
-            <img class="shop-item__gallery__item__visual__img" src="{{ image.src | img_url: 'master' }}" alt="{{ image.alt | escape }}"/>
-          </div>
-        </li>
+          {% if image.scr != product.featured_image %}
+            <li class="shop-item__gallery__item js-display-slider-img">
+              <div class="shop-item__gallery__item__visual">
+                <img class="shop-item__gallery__item__visual__img" src="{{ image.src | img_url: 'master' }}" alt="{{ image.alt | escape }}"/>
+              </div>
+            </li>
+          {% endif %}
       {% endfor %}
     </ul>
   </div>

@@ -132,6 +132,62 @@ if (document.querySelector('.show') !== null) {
       }
     });
   }
+
+  document.onkeydown = function(e) {
+    var displayedItem = document.querySelector('li.shop-item__gallery__item.is-being-displayed');
+
+    switch (e.keyCode) {
+
+      case 37:
+        console.log('yo');
+        var previousItem = displayedItem.previousElementSibling;
+
+        if (previousItem !== null) {
+          console.log('niet null');
+          displayedItem.classList.remove('is-being-displayed');
+          previousItem.classList.add('is-being-displayed');
+
+          sliderProjection.src = previousItem.querySelector('.shop-item__gallery__item__visual__img').src;
+
+          if (previousItem.previousElementSibling == null) {
+            btnPrevious.classList.add('is-hidden');
+          }
+
+          if (btnNext.classList.contains('is-hidden')) {
+            btnNext.classList.remove('is-hidden');
+          }
+
+          currentLocation -= 1;
+
+          paginationElementCurrent.innerHTML = currentLocation;
+        }
+
+        break;
+
+      case 39:
+
+        var nextItem = displayedItem.nextElementSibling;
+
+        if (nextItem !== null) {
+          displayedItem.classList.remove('is-being-displayed');
+          nextItem.classList.add('is-being-displayed');
+          sliderProjection.src = nextItem.querySelector('.shop-item__gallery__item__visual__img').src;
+
+          if ( nextItem.nextElementSibling == null ) {
+            btnNext.classList.add('is-hidden');
+          }
+
+          if (btnPrevious.classList.contains('is-hidden')) {
+            btnPrevious.classList.remove('is-hidden');
+          }
+
+          currentLocation += 1;
+          paginationElementCurrent.innerHTML = currentLocation;
+        }
+
+        break;
+    }
+  };
 }
 
 var filterAnchors = document.querySelectorAll('.js-filter a');
