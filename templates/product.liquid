@@ -20,14 +20,12 @@
           <img class="shop-item__gallery__item__visual__img" src="{{ product.featured_image.src | img_url: 'master' }}" alt="{{ image.alt | escape }}"/>
         </div>
       </li>
-      {% for image in product.images %}
-          {% if image.scr != product.featured_image %}
-            <li class="shop-item__gallery__item js-display-slider-img">
-              <div class="shop-item__gallery__item__visual">
-                <img class="shop-item__gallery__item__visual__img" src="{{ image.src | img_url: 'master' }}" alt="{{ image.alt | escape }}"/>
-              </div>
-            </li>
-          {% endif %}
+      {% for image in product.images offset:1 %}
+          <li class="shop-item__gallery__item js-display-slider-img">
+            <div class="shop-item__gallery__item__visual">
+              <img class="shop-item__gallery__item__visual__img" src="{{ image.src | img_url: 'master' }}" alt="{{ image.alt | escape }}"/>
+            </div>
+          </li>
       {% endfor %}
     </ul>
   </div>
