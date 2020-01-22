@@ -32,42 +32,49 @@
   <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
     <div class="wrapper">
       <div class="shop-item__meta">
-        <div class="number-input-group">
-          <input type="number" id="Quantity" name="quantity" value="1" min="1">
-        </div>
-        <div class="product-variants infiniteoptions">
-          <ul class="radio-input-group">
-          {% for variant in product.variants %}
-        	  <li class="{% cycle 'odds': 'odd', 'even' %}">
-        		  {% if variant.available %}
-              {% assign hide_default_title = true %}
-              {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
-                {% assign hide_default_title = false %}
-              {% endif %}
-              {% if hide_default_title %}
-                <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" {% if forloop.first %}checked="checked"{% endif %} />
-        			  <label for="radio_{{ variant.id }}" class="radio">
-        				  {{ variant.title | escape }}
-        			  </label>
-              {% else %}
-                <div class="hidden-input-group">
+        {% if product.available %}
+          <div class="number-input-group">
+            <input type="number" id="Quantity" name="quantity" value="1" min="1">
+          </div>
+          <div class="product-variants infiniteoptions">
+            <ul class="radio-input-group">
+            {% for variant in product.variants %}
+          	  <li class="{% cycle 'odds': 'odd', 'even' %}">
+          		  {% if variant.available %}
+                {% assign hide_default_title = true %}
+                {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+                  {% assign hide_default_title = false %}
+                {% endif %}
+                {% if hide_default_title %}
                   <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" {% if forloop.first %}checked="checked"{% endif %} />
-                  <label for="radio_{{ variant.id }}" class="radio">
-                    {{ variant.title | escape }}
-                  </label>
-                </div>
-              {% endif %}
-        		  {% else %}
-        			  <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" disabled="disabled" />
-        			  <label for="radio_{{ variant.id }}" class="radio">
-        				  {{ variant.title }}
-        			  </label>
-        		  {% endif %}
-        	  </li>
-          {% endfor %}
-          </ul>
-        </div>
-        <button class="cta" type="submit" name="add" id="AddToCart">Add to shopping cart</button>
+          			  <label for="radio_{{ variant.id }}" class="radio">
+          				  {{ variant.title | escape }}
+          			  </label>
+                {% else %}
+                  <div class="hidden-input-group">
+                    <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" {% if forloop.first %}checked="checked"{% endif %} />
+                    <label for="radio_{{ variant.id }}" class="radio">
+                      {{ variant.title | escape }}
+                    </label>
+                  </div>
+                {% endif %}
+          		  {% else %}
+          			  <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" disabled="disabled" />
+          			  <label for="radio_{{ variant.id }}" class="radio">
+          				  {{ variant.title }}
+          			  </label>
+          		  {% endif %}
+          	  </li>
+            {% endfor %}
+            </ul>
+          </div>
+          <button class="cta" type="submit" name="add" id="AddToCart">Add to shopping cart</button>
+        {% else %}
+          <div class="shop-item__meta__status">
+            <p class="shop-item__meta__status__message">We're sorry but this item is sold out.</p>
+            <a href="{{ shop.url }}" class="shop-item__meta__status__btn cta">Browse shop</a>
+          </div>
+        {% endif %}
       </div>
       <div class="shop-item__text">
         <h2 class="shop-item__text__name">{{ product.title }}</h2>
