@@ -2,7 +2,15 @@
   <div id="product-container" class="shop__list">
     {% for product in collections['all'].products %}
       <a href="{{ product.url | within: collection }}" class="shop__list__item">
-        <div class="shop__list__item__visual" style="background: center no-repeat url({{ product.featured_image.src | img_url: 'large' }}); background-size: cover;"></div>
+        <div class="shop__list__item__visual" style="background: center no-repeat url({{ product.featured_image.src | img_url: 'large' }}); background-size: cover;">
+          {% if product.metafields.global.label != blank %}
+            <ul class="tags">
+              {% for key_value in product.metafields.global.label %}
+                <li class="tags__tag">{{ key_value[1] }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
         <div class="shop__list__item__text">
           {% unless product.available %}
             <p class="shop__list__item__text__status">Sold out</p>

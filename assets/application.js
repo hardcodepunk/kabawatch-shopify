@@ -139,11 +139,9 @@ if (document.querySelector('.show') !== null) {
     switch (e.keyCode) {
 
       case 37:
-        console.log('yo');
         var previousItem = displayedItem.previousElementSibling;
 
         if (previousItem !== null) {
-          console.log('niet null');
           displayedItem.classList.remove('is-being-displayed');
           previousItem.classList.add('is-being-displayed');
 
